@@ -1,16 +1,27 @@
 
 import UI from './UI.js';
+import LevelControl from './LevelControl.js';
 
 import params from '../data/params.js';
 
 //
 
-let lastLevelAvailable = 0;
-let areShadowLevelsAvailable = false;
+let lastLevelAvailable, areShadowLevelsAvailable, ghosts, world;
+
+
 
 //
 
 function startNewGame() {
+
+	lastLevelAvailable = 0;
+	areShadowLevelsAvailable = false;
+
+	// array in which are stored all the recorded player tracks
+	ghosts = [];
+
+	// object in which is stored the grid information persistant accross all levels
+	world = NewWorld();
 
 	UI.hideHomeScreen();
 
@@ -20,16 +31,14 @@ function startNewGame() {
 
 function startLevel( levelID, levelFamily ) {
 
-	console.log('start level ' + levelID + ' of family ' + levelFamily )
+	// console.log('start level ' + levelID + ' of family ' + levelFamily )
+
+	LevelControl.initLevel( levelID, levelFamily, world, ghosts );
+
+	// update UI
 
 	UI.hideLevelMenu();
 	UI.hideWinMessage();
-
-	setTimeout( () => {
-
-		winLevel( levelID, levelFamily )
-
-	}, 1000 );
 
 }
 
@@ -75,6 +84,35 @@ function winLevel( levelID, levelFamily ) {
 
 //
 
+function NewWorld() {
+
+	const world = [];
+
+	for ( let rowID=0 ; rowID<params.WORLD_WIDTH ; rowID++ ) {
+
+		world.push( [] );
+
+		for ( let tileID=0 ; tileID<params.WORLD_WIDTH ; tileID++ ) {
+
+			const newTile = {
+				row: rowID,
+				id: tileID,
+				type: 0
+			}
+
+			world[ rowID ].push( newTile );
+			
+		}
+
+	}
+
+	return world
+
+}
+
+//
+
+export { winLevel }
 export default {
 	startNewGame,
 	startLevel

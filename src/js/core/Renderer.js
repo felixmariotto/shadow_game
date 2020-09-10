@@ -6,13 +6,16 @@ import Camera from './Camera.js';
 
 //
 
-const renderer = new THREE.WebGLRenderer({ antialias: true });
+const CANVAS = document.querySelector('#game-canvas');
 
-renderer.setSize( window.innerWidth, window.innerHeight );
+const renderer = new THREE.WebGLRenderer({
+	antialias: true,
+	canvas: CANVAS
+});
+
+renderer.setSize( CANVAS.scrollWidth, CANVAS.scrollHeight );
 
 renderer.outputEncoding = THREE.sRGBEncoding;
-
-document.body.appendChild( renderer.domElement );
 
 //
 
@@ -29,10 +32,12 @@ function render() {
 
 function updateSize() {
 
+	/*
 	renderer.setSize(
 		window.innerWidth,
 		window.innerHeight
 	);
+	*/
 
 }
 

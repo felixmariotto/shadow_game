@@ -52,7 +52,8 @@
       }
 
         #game-ui canvas {
-          position: relative;
+          position: fixed;
+          top: 0;
           background-color: purple;
           width: 100vw;
           max-width: 100vh;
@@ -138,7 +139,7 @@
         </div>
       </div>
       <div id="win-message">You Win !</div>
-      <canvas></canvas>
+      <canvas id="game-canvas"></canvas>
     </div>
 
   </body>

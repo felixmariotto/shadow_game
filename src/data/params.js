@@ -1,4 +1,7 @@
 
 export default {
-	LEVELS_PER_FAMILY: 6
+	LEVELS_PER_FAMILY: 6,
+	PLAYER_RADIUS: 1,
+	WORLD_WIDTH: 8,
+	TILE_WIDTH: 1
 }

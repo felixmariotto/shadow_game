@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <title><%= htmlWebpackPlugin.options.title %></title>
+    <style>
+
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        overflow: hidden;
+      }
+
+        body>div {
+          position: fixed;
+          height: 100%;
+          width: 100%;
+          top: 0;
+          left: 0;
+        }
+
+      /* HOME SCREEN */
+
+      #home-screen {
+        background-color: blue;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+        #start-button {
+          background-color: white;
+          padding: 20px 40px;
+          font-size: 1.5em;
+          border-radius: 5px;
+          cursor: pointer;
+        }
+
+      /* GAME UI */
+
+      #game-ui {
+        background-color: red;
+        z-index: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+        #game-ui canvas {
+          background-color: purple;
+          width: 100vw;
+          max-width: 100vh;
+          height: 100vh;
+          max-height: 100vw;
+        }
+
+        #level-menu {
+          position: absolute;
+          height: 100%;
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          background-color: grey;
+        }
+
+          #level-menu>div {
+            background-color: orange;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 50px 0;
+          }
+
+            .level-btn {
+              background-color: cyan;
+              height: 50px;
+              width: 50px;
+              margin: 20px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
+
+    </style>
+  </head>
+
+  <body>
+
+    <div id="home-screen">
+      <div id="start-button">start</div>
+    </div>
+
+    <div id="game-ui">
+      <div id="level-menu">
+        <h1>Select a level</h1>
+        <div id="first-levels">
+          <div class="level-btn" id="1">1</div>
+          <div class="level-btn" id="2">2</div>
+          <div class="level-btn" id="3">3</div>
+          <div class="level-btn" id="4">4</div>
+          <div class="level-btn" id="5">5</div>
+          <div class="level-btn" id="6">6</div>
+        </div>
+        <div id="second-levels">
+          <div class="level-btn" id="1-2">1</div>
+          <div class="level-btn" id="2-2">2</div>
+          <div class="level-btn" id="3-2">3</div>
+          <div class="level-btn" id="4-2">4</div>
+          <div class="level-btn" id="5-2">5</div>
+          <div class="level-btn" id="6-2">6</div>
+        </div>
+      </div>
+      <canvas></canvas>
+    </div>
+
+  </body>
+</html>

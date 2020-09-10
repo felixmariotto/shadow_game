@@ -8,6 +8,7 @@ const domHomeScreen = document.querySelector('#home-screen');
 const domGameUI = document.querySelector('#game-ui');
 const domLevelBtns = document.querySelectorAll('.level-btn');
 const domLevelMenu = document.querySelector('#level-menu');
+const domWinMessage = document.querySelector('#win-message');
 
 const firstLevelsButtons = [];
 const secondLevelsButtons = [];
@@ -45,8 +46,11 @@ function sortButtons( a, b ) {
 };
 
 // add event listener on buttons to start levels on click
+// + add them to the 'disabled' class but the first one
 
 firstLevelsButtons.forEach( (button, i) => {
+
+	if ( i ) button.classList.add('disabled');
 
 	button.addEventListener( 'click', () => {
 
@@ -58,6 +62,8 @@ firstLevelsButtons.forEach( (button, i) => {
 
 secondLevelsButtons.forEach( (button, i) => {
 
+	button.classList.add('disabled');
+
 	button.addEventListener( 'click', () => {
 
 		GameControl.startLevel( i, 1 );
@@ -66,7 +72,7 @@ secondLevelsButtons.forEach( (button, i) => {
 
 });
 
-// hide home screen. called by GameControl on game start
+// show/hide home screen. called by GameControl
 
 function hideHomeScreen() {
 
@@ -74,7 +80,7 @@ function hideHomeScreen() {
 
 }
 
-// hide level menu. called by GameControl
+// show/hide level menu. called by GameControl
 
 function hideLevelMenu() {
 
@@ -82,9 +88,43 @@ function hideLevelMenu() {
 
 }
 
+function showLevelMenu() {
+
+	domLevelMenu.style.display = 'flex';
+
+}
+
+// show/hide win message. called by GameControl
+
+function showWinMessage() {
+
+	domWinMessage.style.display = 'inherit';
+
+}
+
+function hideWinMessage() {
+
+	domWinMessage.style.display = 'none';
+
+}
+
+// unlock the next level button after the player finished a level
+
+function unlockLevelButton( btnID, rowID ) {
+
+	const btnArr = rowID ? secondLevelsButtons : firstLevelsButtons;
+
+	btnArr[ btnID ].classList.remove( 'disabled' );
+
+}
+
 //
 
 export default {
 	hideHomeScreen,
-	hideLevelMenu
+	showLevelMenu,
+	hideLevelMenu,
+	showWinMessage,
+	hideWinMessage,
+	unlockLevelButton
 }

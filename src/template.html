@@ -52,11 +52,24 @@
       }
 
         #game-ui canvas {
+          position: relative;
           background-color: purple;
           width: 100vw;
           max-width: 100vh;
           height: 100vh;
           max-height: 100vw;
+          z-index: 0;
+        }
+
+        #win-message {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate( -50%, -50% );
+          padding: 50px;
+          font-size: 1.5em;
+          background-color: white;
+          z-index: 1;
         }
 
         #level-menu {
@@ -68,6 +81,7 @@
           justify-content: center;
           flex-direction: column;
           background-color: grey;
+          z-index: 2;
         }
 
           #level-menu>div {
@@ -86,6 +100,12 @@
               display: flex;
               align-items: center;
               justify-content: center;
+              cursor: pointer;
+            }
+
+            .level-btn.disabled {
+              opacity: 0.5;
+              pointer-events: none;
             }
 
     </style>
@@ -117,6 +137,7 @@
           <div class="level-btn" id="6-2">6</div>
         </div>
       </div>
+      <div id="win-message">You Win !</div>
       <canvas></canvas>
     </div>
 

@@ -6,9 +6,13 @@ import defaults from '../../data/defaults.js';
 
 //
 
+const CANVAS = document.querySelector('#game-canvas');
+
+//
+
 const camera = new THREE.PerspectiveCamera(
 	defaults.cameraFOV,
-	window.innerWidth/window.innerHeight,
+	CANVAS.scrollWidth/CANVAS.scrollHeight,
 	defaults.cameraMinPlane,
 	defaults.cameraFarPlane
 );

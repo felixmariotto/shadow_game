@@ -25,6 +25,12 @@ function initLevel( levelID, familyID, world, ghosts ) {
 				params.TILE_WIDTH
 			);
 
+			geometry.translate(
+				params.TILE_WIDTH / 2,
+				params.TILE_WIDTH / 2,
+				0
+			);
+
 			const tileMesh = new THREE.Mesh(
 				geometry,
 				new THREE.MeshBasicMaterial({ color: 0xffffff * Math.random() })

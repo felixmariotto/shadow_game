@@ -86,11 +86,21 @@ function winLevel( levelID, levelFamily ) {
 
 function NewWorld() {
 
-	const world = [];
+	const world = {
+		tiles: [],
+		doors: {
+			top: [],
+			right: [],
+			bottom: [],
+			left: []
+		}
+	};
+
+	// create tiles
 
 	for ( let rowID=0 ; rowID<params.WORLD_WIDTH ; rowID++ ) {
 
-		world.push( [] );
+		world.tiles.push( [] );
 
 		for ( let tileID=0 ; tileID<params.WORLD_WIDTH ; tileID++ ) {
 
@@ -100,9 +110,29 @@ function NewWorld() {
 				type: 0
 			}
 
-			world[ rowID ].push( newTile );
+			world.tiles[ rowID ].push( newTile );
 			
 		}
+
+	}
+
+	// create doors
+
+	const sides = [
+		world.doors.top,
+		world.doors.right,
+		world.doors.bottom,
+		world.doors.left
+	];
+
+	let counter = 0;
+
+	for ( let doorsID=0 ; doorsID<params.LEVELS_PER_FAMILY-1 ; doorsID++ ) {
+
+		sides[ counter ].push({ type: 'out', id: doorsID })
+		sides[ (counter + 1) % 4 ].push({ type: 'in', id: doorsID })
+
+		counter = (counter + 1) % 4;
 
 	}
 

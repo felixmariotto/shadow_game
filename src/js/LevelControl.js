@@ -14,7 +14,9 @@ Scene.add( worldGroup );
 
 function initLevel( levelID, familyID, world, ghosts ) {
 
-	world.forEach( (row, rowID) => {
+	// create tiles
+
+	world.tiles.forEach( (row, rowID) => {
 
 		row.forEach( (tile, tileID) => {
 
@@ -44,6 +46,84 @@ function initLevel( levelID, familyID, world, ghosts ) {
 		})
 
 	})
+
+	// create walls
+
+	for ( let sideName of Object.keys( world.doors ) ) {
+
+		const side = world.doors[ sideName ];
+
+		const sideGroup = new THREE.Group();
+
+		Scene.add( sideGroup );
+
+		side.forEach( (door, i) => {
+
+			const geometry = new THREE.PlaneBufferGeometry(
+				params.TILE_WIDTH,
+				params.TILE_WIDTH
+			);
+
+			geometry.rotateX( -Math.PI / 2 );
+
+			if ( sideName == 'left' || sideName == 'right' ) {
+				geometry.rotateZ( -Math.PI / 2 );
+			}
+
+			const material = new THREE.MeshBasicMaterial({
+				color: 0xffffff * Math.random(),
+				side: THREE.DoubleSide
+			});
+
+			const doorMesh = new THREE.Mesh( geometry, material );
+
+			// translate door
+
+			if ( sideName == 'left' || sideName == 'right' ) {
+
+				doorMesh.position.y = i * (params.WORLD_WIDTH / side.length);
+				doorMesh.position.y -= params.WORLD_WIDTH / 2;
+				doorMesh.position.y += (params.WORLD_WIDTH / side.length) / 2;
+
+			} else {
+
+				doorMesh.position.x = i * (params.WORLD_WIDTH / side.length);
+				doorMesh.position.x -= params.WORLD_WIDTH / 2;
+				doorMesh.position.x += (params.WORLD_WIDTH / side.length) / 2;
+
+			}
+
+			//
+
+			sideGroup.add( doorMesh );
+
+		})
+
+		// position group
+
+		sideGroup.position.z += params.TILE_WIDTH / 2;
+
+		switch ( sideName ) {
+
+		case 'top' :
+			sideGroup.position.y += params.WORLD_WIDTH / 2;
+			break
+
+		case 'bottom' :
+			sideGroup.position.y -= params.WORLD_WIDTH / 2;
+			break
+
+		case 'left' :
+			sideGroup.position.x -= params.WORLD_WIDTH / 2;
+			break
+
+		case 'right' :
+			sideGroup.position.x += params.WORLD_WIDTH / 2;
+			break
+
+		}
+
+	}
 
 }
 

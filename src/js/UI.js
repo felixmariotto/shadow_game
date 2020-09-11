@@ -24,39 +24,7 @@ domStartBtn.addEventListener('click', () => {
 
 });
 
-
-
-
-
-
-/*
-
-// add level buttons to arrays and sort those arrays
-
-domLevelBtns.forEach( (button) => {
-
-	if ( button.id.indexOf('-') === -1 ) {
-
-		firstLevelsButtons.push( button );
-
-	} else {
-
-		secondLevelsButtons.push( button );
-
-	}
-
-});
-
-firstLevelsButtons.sort( sortButtons );
-secondLevelsButtons.sort( sortButtons );
-
-function sortButtons( a, b ) {
-	if ( Number( a.id[0] ) > Number( b.id[0] ) ) return 1
-	else return -1
-};
-
-*/
-
+// create level buttons
 
 for ( let i=0 ; i<params.LEVELS_PER_FAMILY ; i++ ) {
 

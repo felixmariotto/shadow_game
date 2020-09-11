@@ -13,7 +13,8 @@ updateBackground( defaults.sceneBackColor );
 export default {
 	threeScene: scene,
 	updateBackground,
-	add
+	add,
+	remove
 }
 
 //
@@ -39,5 +40,13 @@ function updateBackground( color ) {
 function add() {
 
 	scene.add( ...arguments );
+
+};
+
+//
+
+function remove() {
+
+	scene.remove( ...arguments );
 
 };

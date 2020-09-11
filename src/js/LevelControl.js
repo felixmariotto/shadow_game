@@ -218,7 +218,18 @@ function updatePlayerMesh() {
 
 function cleanup() {
 
-	ghosts = player = undefined;
+	player = undefined;
+
+	ghosts.forEach( (ghost) => {
+
+		ghost.mesh.geometry.dispose();
+		ghost.mesh.material.dispose();
+
+		Scene.remove( ghost.mesh )
+
+	});
+
+	ghosts = undefined;
 
 };
 

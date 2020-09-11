@@ -38,7 +38,7 @@ function startLevel( levelID, levelFamily ) {
 
 	// console.log('start level ' + levelID + ' of family ' + levelFamily )
 
-	LevelControl.initLevel( ghosts );
+	LevelControl.initLevel( levelID, levelFamily, world, ghosts );
 
 	// update UI
 

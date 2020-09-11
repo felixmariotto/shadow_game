@@ -70,13 +70,32 @@ function gameLoop() {
 
 	if ( player ) {
 
+		// update player velocity
+
 		const targetVelY = ( Input.keys.top ? params.PLAYER_SPEED : 0 ) - ( Input.keys.bottom ? params.PLAYER_SPEED : 0 );
 		const targetVelX = ( Input.keys.right ? params.PLAYER_SPEED : 0 ) - ( Input.keys.left ? params.PLAYER_SPEED : 0 );
 
 		playerVelocity.x += ( targetVelX - playerVelocity.x ) * 0.07;
 		playerVelocity.y += ( targetVelY - playerVelocity.y ) * 0.07;
 
+		// move player
+
 		player.pos.add( playerVelocity );
+
+		// apply constraints
+
+			// external walls
+
+			const limit = ( params.WORLD_WIDTH / 2 ) - params.PLAYER_RADIUS;
+
+			if ( player.pos.x > limit ) player.pos.x = limit;
+			if ( player.pos.x < -limit ) player.pos.x = -limit;
+
+			if ( player.pos.y > limit ) player.pos.y = limit;
+			if ( player.pos.y < -limit ) player.pos.y = -limit;
+
+
+		// update player mesh
 
 		updatePlayerMesh();
 

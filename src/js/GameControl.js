@@ -179,18 +179,42 @@ function createWorld( world ) {
 
 		row.forEach( (tile, tileID) => {
 
-			// console.log( tile.type )
+			let geometry;
 
-			const geometry = new THREE.PlaneBufferGeometry(
-				params.TILE_WIDTH,
-				params.TILE_WIDTH
-			);
+			switch ( tile.type ) {
 
-			geometry.translate(
-				params.TILE_WIDTH / 2,
-				params.TILE_WIDTH / 2,
-				0
-			);
+			case 0 :
+
+				geometry = new THREE.PlaneBufferGeometry(
+					params.TILE_WIDTH,
+					params.TILE_WIDTH
+				);
+
+				geometry.translate(
+					params.TILE_WIDTH / 2,
+					params.TILE_WIDTH / 2,
+					0
+				);
+
+				break
+
+			case 1 :
+
+				geometry = new THREE.BoxBufferGeometry(
+					params.TILE_WIDTH,
+					params.TILE_WIDTH,
+					1
+				);
+
+				geometry.translate(
+					params.TILE_WIDTH / 2,
+					params.TILE_WIDTH / 2,
+					0.5
+				);
+
+				break
+
+			}
 
 			const tileMesh = new THREE.Mesh(
 				geometry,
@@ -205,6 +229,32 @@ function createWorld( world ) {
 		})
 
 	})
+
+	// create walls
+
+	function Wall() {
+		const geom = new THREE.PlaneBufferGeometry( params.TILE_WIDTH, params.WORLD_WIDTH * params.TILE_WIDTH );
+		geom.rotateY( Math.PI / 2 );
+		geom.translate( 0, 0, params.TILE_WIDTH / 2 );
+		const mesh = new THREE.Mesh( geom, params.WALLS_MAT );
+		return mesh
+	}
+
+	const topWall = Wall();
+	topWall.rotation.z = Math.PI / 2;
+	topWall.position.y += params.WORLD_WIDTH / 2;
+
+	const bottomWall = Wall();
+	bottomWall.rotation.z = Math.PI / 2;
+	bottomWall.position.y -= params.WORLD_WIDTH / 2;
+
+	const leftWall = Wall();
+	leftWall.position.x -= params.WORLD_WIDTH / 2;
+
+	const rightWall = Wall();
+	rightWall.position.x += params.WORLD_WIDTH / 2;
+
+	Scene.add( topWall, bottomWall, leftWall, rightWall );
 
 	// create doors
 
@@ -227,19 +277,19 @@ function createWorld( world ) {
 		switch ( sideName ) {
 
 		case 'top' :
-			sideGroup.position.y += params.WORLD_WIDTH / 2;
+			sideGroup.position.y += ( params.WORLD_WIDTH / 2 ) - 0.03;
 			break
 
 		case 'bottom' :
-			sideGroup.position.y -= params.WORLD_WIDTH / 2;
+			sideGroup.position.y -= ( params.WORLD_WIDTH / 2 ) - 0.03;
 			break
 
 		case 'left' :
-			sideGroup.position.x -= params.WORLD_WIDTH / 2;
+			sideGroup.position.x -= ( params.WORLD_WIDTH / 2 ) - 0.03;
 			break
 
 		case 'right' :
-			sideGroup.position.x += params.WORLD_WIDTH / 2;
+			sideGroup.position.x += ( params.WORLD_WIDTH / 2 ) - 0.03;
 			break
 
 		}

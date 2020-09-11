@@ -29,10 +29,11 @@ const params = {
 	
 	TILES_MAT: [
 		new THREE.MeshBasicMaterial({ color: 0xff00ff }),
-		new THREE.MeshBasicMaterial({ color: 0xff0000 })
+		new THREE.MeshNormalMaterial()
 	],
 	DOOR_MAT: new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide }),
-	TARGET_DOOR_MAT: new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide })
+	TARGET_DOOR_MAT: new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide }),
+	WALLS_MAT: new THREE.MeshNormalMaterial({ side: THREE.DoubleSide }),
 
 }
 

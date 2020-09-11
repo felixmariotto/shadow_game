@@ -60,7 +60,7 @@ function initLevel( lvlID, fmID, world, recordedGhosts ) {
 		family.forEach( (ghostTrack) => {
 
 			const ghost = {
-				pos: new THREE.Vector3(),
+				pos: new THREE.Vector3( 0, 0, 0.5 ),
 				mesh: Assets.Ghost(),
 				track: ghostTrack,
 				duration: ghostTrack[ ghostTrack.length - 1 ].time

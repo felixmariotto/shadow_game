@@ -24,7 +24,6 @@ function startNewGame() {
 
 	// object in which is stored the grid information persistant accross all levels
 	world = NewWorld();
-
 	// create world meshes
 	createWorld( world );
 
@@ -97,7 +96,8 @@ function NewWorld() {
 			top: [],
 			right: [],
 			bottom: [],
-			left: []
+			left: [],
+			perID: []
 		}
 	};
 
@@ -134,10 +134,18 @@ function NewWorld() {
 
 	for ( let doorsID=0 ; doorsID<params.LEVELS_PER_FAMILY-1 ; doorsID++ ) {
 
-		sides[ counter ].push({ type: 'out', id: doorsID })
-		sides[ (counter + 1) % 4 ].push({ type: 'in', id: doorsID })
+		const doorOut = { type: 'out', id: doorsID };
+		const doorIn = { type: 'in', id: doorsID };
+
+		sides[ counter ].push( doorOut );
+		sides[ (counter + 1) % 4 ].push( doorIn );
 
 		counter = (counter + 1) % 4;
+
+		world.doors.perID.push({
+			out: doorOut,
+			in: doorIn
+		})
 
 	}
 
@@ -182,15 +190,45 @@ function createWorld( world ) {
 
 	})
 
-	// create walls
+	// create doors
 
 	for ( let sideName of Object.keys( world.doors ) ) {
 
+		if ( sideName === "perID" ) return
+
 		const side = world.doors[ sideName ];
+
+		// create side group
 
 		const sideGroup = new THREE.Group();
 
 		Scene.add( sideGroup );
+
+		// position group
+
+		sideGroup.position.z += params.TILE_WIDTH / 2;
+
+		switch ( sideName ) {
+
+		case 'top' :
+			sideGroup.position.y += params.WORLD_WIDTH / 2;
+			break
+
+		case 'bottom' :
+			sideGroup.position.y -= params.WORLD_WIDTH / 2;
+			break
+
+		case 'left' :
+			sideGroup.position.x -= params.WORLD_WIDTH / 2;
+			break
+
+		case 'right' :
+			sideGroup.position.x += params.WORLD_WIDTH / 2;
+			break
+
+		}
+
+		// create doors and put it in side groups
 
 		side.forEach( (door, i) => {
 
@@ -230,33 +268,14 @@ function createWorld( world ) {
 
 			//
 
+			door.position = new THREE.Vector3().copy( doorMesh.position );
+			door.position.add( sideGroup.position );
+
+			//
+
 			sideGroup.add( doorMesh );
 
 		})
-
-		// position group
-
-		sideGroup.position.z += params.TILE_WIDTH / 2;
-
-		switch ( sideName ) {
-
-		case 'top' :
-			sideGroup.position.y += params.WORLD_WIDTH / 2;
-			break
-
-		case 'bottom' :
-			sideGroup.position.y -= params.WORLD_WIDTH / 2;
-			break
-
-		case 'left' :
-			sideGroup.position.x -= params.WORLD_WIDTH / 2;
-			break
-
-		case 'right' :
-			sideGroup.position.x += params.WORLD_WIDTH / 2;
-			break
-
-		}
 
 	}
 

@@ -25,10 +25,18 @@ const TARGET_STEP_DURATION = ( 1 / 60 ) / params.SIMULATION_STEPS_PER_FRAME;
 
 function initLevel( levelID, familyID, world, ghosts ) {
 
+	console.log( world )
+
 	player = {
 		pos: new THREE.Vector3(),
 		mesh: Assets.player
 	};
+
+	// put player in front of the right door
+
+	player.pos.copy( world.doors.perID[ levelID ].in.position );
+
+	//
 
 	player.mesh.position.copy( player.pos );
 
@@ -48,13 +56,6 @@ function gameLoop() {
 
 		const targetVelY = ( Input.keys.top ? params.PLAYER_SPEED : 0 ) - ( Input.keys.bottom ? params.PLAYER_SPEED : 0 );
 		const targetVelX = ( Input.keys.right ? params.PLAYER_SPEED : 0 ) - ( Input.keys.left ? params.PLAYER_SPEED : 0 );
-
-		/*
-		if ( Input.keys.top ) player.pos.y += params.PLAYER_SPEED;
-		if ( Input.keys.bottom ) player.pos.y -= params.PLAYER_SPEED;
-		if ( Input.keys.right ) player.pos.x += params.PLAYER_SPEED;
-		if ( Input.keys.left ) player.pos.x -= params.PLAYER_SPEED;
-		*/
 
 		playerVelocity.x += ( targetVelX - playerVelocity.x ) * 0.07;
 		playerVelocity.y += ( targetVelY - playerVelocity.y ) * 0.07;

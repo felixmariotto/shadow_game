@@ -21,7 +21,7 @@ const vec2 = new THREE.Vector3();
 const worldGroup = new THREE.Group();
 Scene.add( worldGroup );
 
-let player, tiles, ghosts, endDoor, levelID, familyID, hasWon, ghostSampleTime, ghostSamples;
+let player, tiles, ghosts, endDoor, levelID, familyID, gameIsDone, ghostSampleTime, ghostSamples;
 let startTime, elapsedTime = 0;
 
 const clock = new THREE.Clock();
@@ -38,7 +38,7 @@ function initLevel( lvlID, fmID, world, recordedGhosts ) {
 
 	levelID = lvlID;
 	familyID = fmID;
-	hasWon = false;
+	gameIsDone = false;
 	ghostSampleTime = 0;
 	ghostSamples = [];
 	ghosts = [];
@@ -114,7 +114,7 @@ function initLevel( lvlID, fmID, world, recordedGhosts ) {
 
 function gameLoop() {
 
-	if ( hasWon ) return
+	if ( gameIsDone ) return
 
 	const deltaTime = clock.getDelta();
 
@@ -253,11 +253,11 @@ function gameLoop() {
 	// test if player is on end door
 
 	if (
-		endDoor &&
+		player && endDoor &&
 		player.pos.distanceTo( endDoor.position ) < ( params.PLAYER_RADIUS + endDoor.radius )
 	) {
 
-		hasWon = true;
+		gameIsDone = true;
 
 		ghostSamples.push({
 			x: player.pos.x,
@@ -266,6 +266,24 @@ function gameLoop() {
 		})
 
 		GameControl.winLevel( levelID, familyID, ghostSamples );
+
+	}
+
+	// test if player collides a ghost
+
+	if ( player ) {
+
+		ghosts.forEach( (ghost) => {
+
+			if ( ghost.pos.distanceTo( player.pos ) < params.PLAYER_RADIUS * 1.9 ) {
+
+				gameIsDone = true;
+
+				GameControl.failLevel();
+
+			}
+
+		})
 
 	}
 
@@ -313,8 +331,6 @@ function cleanup() {
 		Scene.remove( ghost.mesh )
 
 	});
-
-	ghosts = undefined;
 
 };
 

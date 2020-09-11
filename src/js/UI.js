@@ -9,7 +9,7 @@ const domHomeScreen = document.querySelector('#home-screen');
 const domGameUI = document.querySelector('#game-ui');
 const domLevelBtns = document.querySelectorAll('.level-btn');
 const domLevelMenu = document.querySelector('#level-menu');
-const domWinMessage = document.querySelector('#win-message');
+const domMessage = document.querySelector('#message');
 const domFirstLevels = document.querySelector('#first-levels');
 const domSecondLevels = document.querySelector('#second-levels');
 
@@ -102,15 +102,16 @@ function showLevelMenu() {
 
 // show/hide win message. called by GameControl
 
-function showWinMessage() {
+function showMessage( text ) {
 
-	domWinMessage.style.display = 'inherit';
+	domMessage.innerHTML = text;
+	domMessage.style.display = 'inherit';
 
 }
 
-function hideWinMessage() {
+function hideMessage() {
 
-	domWinMessage.style.display = 'none';
+	domMessage.style.display = 'none';
 
 }
 
@@ -130,7 +131,7 @@ export default {
 	hideHomeScreen,
 	showLevelMenu,
 	hideLevelMenu,
-	showWinMessage,
-	hideWinMessage,
+	showMessage,
+	hideMessage,
 	unlockLevelButton
 }

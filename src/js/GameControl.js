@@ -42,7 +42,7 @@ function startLevel( levelID, levelFamily ) {
 	// update UI
 
 	UI.hideLevelMenu();
-	UI.hideWinMessage();
+	UI.hideMessage();
 
 }
 
@@ -90,7 +90,23 @@ function winLevel( levelID, familyID, ghostSamples ) {
 
 	// update user interface ( win message etc.. )
 
-	UI.showWinMessage();
+	UI.showMessage("you finished this level !");
+
+	setTimeout( () => {
+
+		UI.showLevelMenu();
+
+		LevelControl.cleanup();
+
+	}, 1000 );
+
+}
+
+//
+
+function failLevel() {
+
+	UI.showMessage("level failed... try again");
 
 	setTimeout( () => {
 
@@ -349,5 +365,6 @@ function createWorld( world ) {
 export default {
 	startNewGame,
 	startLevel,
-	winLevel
+	winLevel,
+	failLevel
 }

@@ -20,7 +20,7 @@ function startNewGame() {
 	areShadowLevelsAvailable = false;
 
 	// array in which are stored all the recorded player tracks
-	ghosts = [];
+	ghosts = [[],[]];
 
 	// object in which is stored the grid information persistant accross all levels
 	world = NewWorld();
@@ -48,7 +48,21 @@ function startLevel( levelID, levelFamily ) {
 
 //
 
-function winLevel( levelID, familyID ) {
+function winLevel( levelID, familyID, ghostSamples ) {
+
+	// record ghost
+
+	if (
+		lastLevelAvailable === levelID &&
+		(
+			( familyID === 0 && !areShadowLevelsAvailable ) ||
+			( familyID === 1 && areShadowLevelsAvailable )
+		)
+	) {
+
+		ghosts[ familyID ][ levelID ] = ghostSamples.slice(0);
+
+	};
 
 	// upgrade last level available
 

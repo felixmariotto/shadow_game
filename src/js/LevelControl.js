@@ -14,7 +14,8 @@ import params from '../data/params.js';
 const worldGroup = new THREE.Group();
 Scene.add( worldGroup );
 
-let player, endDoor, levelID, familyID, hasWon;
+let player, ghosts, endDoor, levelID, familyID, hasWon, ghostSampleTime, ghostSamples;
+let startTime, elapsedTime = 0;
 
 const clock = new THREE.Clock();
 
@@ -24,13 +25,40 @@ const TARGET_STEP_DURATION = ( 1 / 60 ) / params.SIMULATION_STEPS_PER_FRAME;
 
 //
 
-function initLevel( lvlID, fmID, world, ghosts ) {
+function initLevel( lvlID, fmID, world, recordedGhosts ) {
 
-	// console.log( world )
+	// init variables
 
 	levelID = lvlID;
 	familyID = fmID;
 	hasWon = false;
+	ghostSampleTime = 0;
+	ghostSamples = [];
+	ghosts = [];
+	startTime, elapsedTime = 0;
+
+	// create ghosts ( if any )
+
+	recordedGhosts.forEach( (family) => {
+
+		family.forEach( (ghostTrack) => {
+
+			const ghost = {
+				pos: new THREE.Vector3(),
+				mesh: Assets.Ghost(),
+				track: ghostTrack,
+				duration: ghostTrack[ ghostTrack.length - 1 ].time
+			};
+
+			ghosts.push( ghost );
+
+			Scene.add( ghost.mesh );
+
+		})
+
+	})
+
+	// create player
 
 	player = {
 		pos: new THREE.Vector3(),
@@ -40,6 +68,12 @@ function initLevel( lvlID, fmID, world, ghosts ) {
 	// put player in front of the right door
 
 	player.pos.copy( world.doors.perID[ levelID ].in.position );
+
+	ghostSamples.push({
+		x: player.pos.x,
+		y: player.pos.y,
+		time: elapsedTime
+	})
 
 	// create end door
 
@@ -64,7 +98,13 @@ function gameLoop() {
 
 	if ( hasWon ) return
 
-	const speedRatio = clock.getDelta() / TARGET_STEP_DURATION;
+	const deltaTime = clock.getDelta();
+
+	const speedRatio = deltaTime / TARGET_STEP_DURATION;
+
+	ghostSampleTime += deltaTime * 1000;
+
+	elapsedTime += deltaTime * 1000;
 
 	// move player
 
@@ -101,14 +141,65 @@ function gameLoop() {
 
 	}
 
+	// move ghosts
+
+	if ( ghosts ) {
+
+		ghosts.forEach( (ghost) => {
+
+			const targetTime = elapsedTime % ghost.duration;
+
+			const currentPosIdx = ghost.track.findIndex( sample => sample.time >= targetTime );
+
+			const startSample = ghost.track[ currentPosIdx - 1 ];
+			const endSample = ghost.track[ currentPosIdx ];
+
+			const t = ( targetTime - startSample.time ) / ( endSample.time - startSample.time );
+
+			ghost.pos.x = THREE.MathUtils.lerp( startSample.x, endSample.x, t );
+			ghost.pos.y = THREE.MathUtils.lerp( startSample.y, endSample.y, t );
+
+			ghost.mesh.position.copy( ghost.pos );
+
+		})
+
+	}
+
 	// test if player is on end door
 
 	if (
 		endDoor &&
 		player.pos.distanceTo( endDoor.position ) < ( params.PLAYER_RADIUS + endDoor.radius )
 	) {
+
 		hasWon = true;
-		GameControl.winLevel( levelID, familyID )
+
+		ghostSamples.push({
+			x: player.pos.x,
+			y: player.pos.y,
+			time: elapsedTime
+		})
+
+		GameControl.winLevel( levelID, familyID, ghostSamples );
+
+	}
+
+	// sample player moves for later ghost
+
+	if ( player ) {
+
+		if ( ghostSampleTime > params.TIME_STEP_GHOST_SAMPLE ) {
+
+			ghostSampleTime = 0;
+
+			ghostSamples.push({
+				x: player.pos.x,
+				y: player.pos.y,
+				time: elapsedTime
+			})
+
+		}
+
 	}
 
 }
@@ -127,7 +218,7 @@ function updatePlayerMesh() {
 
 function cleanup() {
 
-	console.log('cleanup level')
+	ghosts = player = undefined;
 
 };
 

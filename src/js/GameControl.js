@@ -194,7 +194,7 @@ function createWorld( world ) {
 
 			const tileMesh = new THREE.Mesh(
 				geometry,
-				new THREE.MeshBasicMaterial({ color: 0xffffff * Math.random() })
+				params.TILES_MAT[ tile.type ]
 			)
 
 			tileMesh.position.y = (rowID * params.TILE_WIDTH) - ((params.WORLD_WIDTH * params.TILE_WIDTH) / 2);
@@ -259,12 +259,7 @@ function createWorld( world ) {
 				geometry.rotateZ( -Math.PI / 2 );
 			}
 
-			const material = new THREE.MeshBasicMaterial({
-				color: 0xffffff * Math.random(),
-				side: THREE.DoubleSide
-			});
-
-			const doorMesh = new THREE.Mesh( geometry, material );
+			const doorMesh = new THREE.Mesh( geometry, params.DOOR_MAT );
 
 			// translate door
 
@@ -286,6 +281,8 @@ function createWorld( world ) {
 
 			door.position = new THREE.Vector3().copy( doorMesh.position );
 			door.position.add( sideGroup.position );
+
+			door.mesh = doorMesh;
 
 			//
 

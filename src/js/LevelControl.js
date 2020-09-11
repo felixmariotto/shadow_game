@@ -37,6 +37,14 @@ function initLevel( lvlID, fmID, world, recordedGhosts ) {
 	ghosts = [];
 	startTime, elapsedTime = 0;
 
+	// reset doors materials
+
+	world.doors.perID.forEach( (door) => {
+
+		door.out.mesh.material = params.DOOR_MAT;
+
+	});
+
 	// create ghosts ( if any )
 
 	recordedGhosts.forEach( (family) => {
@@ -83,6 +91,8 @@ function initLevel( lvlID, fmID, world, recordedGhosts ) {
 	};
 
 	endDoor.position.z = 0;
+
+	world.doors.perID[ levelID ].out.mesh.material = params.TARGET_DOOR_MAT;
 
 	//
 

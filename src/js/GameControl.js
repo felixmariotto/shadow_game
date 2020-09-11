@@ -48,13 +48,13 @@ function startLevel( levelID, levelFamily ) {
 
 //
 
-function winLevel( levelID, levelFamily ) {
+function winLevel( levelID, familyID ) {
 
 	// upgrade last level available
 
 	if (
 		levelID === lastLevelAvailable &&
-		( levelFamily === 0 || areShadowLevelsAvailable )
+		( familyID === 0 || areShadowLevelsAvailable )
 	) {
 
 		lastLevelAvailable ++
@@ -81,6 +81,8 @@ function winLevel( levelID, levelFamily ) {
 	setTimeout( () => {
 
 		UI.showLevelMenu();
+
+		LevelControl.cleanup();
 
 	}, 1000 );
 
@@ -283,8 +285,8 @@ function createWorld( world ) {
 
 //
 
-export { winLevel }
 export default {
 	startNewGame,
-	startLevel
+	startLevel,
+	winLevel
 }

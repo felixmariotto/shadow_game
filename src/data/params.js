@@ -4,19 +4,36 @@ import * as THREE from 'three';
 //
 
 const params = {
-	LEVELS_PER_FAMILY: 10,
+
+	LEVELS_PER_FAMILY: 7,
+
 	PLAYER_RADIUS: 0.4,
-	WORLD_WIDTH: 7,
+	PLAYER_SPEED: 0.01,
+
 	TILE_WIDTH: 1,
-	DOOR_WIDTH: 1,
+	DOOR_WIDTH: 0.8,
+	WORLD_WIDTH: 7,
+	WORLD_TILES: [
+		[ 0, 0, 0, 0, 0, 0, 0 ],
+		[ 0, 1, 1, 0, 1, 1, 0 ],
+		[ 0, 1, 1, 0, 1, 1, 0 ],
+		[ 0, 0, 0, 0, 0, 0, 0 ],
+		[ 0, 1, 1, 0, 1, 1, 0 ],
+		[ 0, 1, 1, 0, 1, 1, 0 ],
+		[ 0, 0, 0, 0, 0, 0, 0 ]
+	],
+
 	SIMULATION_STEPS_PER_FRAME: 3,
 	TIME_STEP_GHOST_SAMPLE: 100, // in ms
-	PLAYER_SPEED: 0.01,
+
+	
 	TILES_MAT: [
-		new THREE.MeshBasicMaterial({ color: 0xff00ff })
+		new THREE.MeshBasicMaterial({ color: 0xff00ff }),
+		new THREE.MeshBasicMaterial({ color: 0xff0000 })
 	],
 	DOOR_MAT: new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide }),
 	TARGET_DOOR_MAT: new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide })
+
 }
 
 //

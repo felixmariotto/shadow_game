@@ -11,10 +11,17 @@ import params from '../data/params.js';
 
 //
 
+const testBox = new THREE.Box3();
+const testSphere = new THREE.Sphere();
+testSphere.radius = params.PLAYER_RADIUS;
+
+const vec = new THREE.Vector3();
+const vec2 = new THREE.Vector3();
+
 const worldGroup = new THREE.Group();
 Scene.add( worldGroup );
 
-let player, ghosts, endDoor, levelID, familyID, hasWon, ghostSampleTime, ghostSamples;
+let player, tiles, ghosts, endDoor, levelID, familyID, hasWon, ghostSampleTime, ghostSamples;
 let startTime, elapsedTime = 0;
 
 const clock = new THREE.Clock();
@@ -36,6 +43,7 @@ function initLevel( lvlID, fmID, world, recordedGhosts ) {
 	ghostSamples = [];
 	ghosts = [];
 	startTime, elapsedTime = 0;
+	tiles = world.tiles;
 
 	// reset doors materials
 
@@ -144,6 +152,73 @@ function gameLoop() {
 			if ( player.pos.y > limit ) player.pos.y = limit;
 			if ( player.pos.y < -limit ) player.pos.y = -limit;
 
+			// no-step tiles
+
+			tiles.forEach( (tilesRow) => {
+
+				tilesRow.forEach( (tile) => {
+ 
+					if ( tile.type === 1 ) {
+
+						const tilePos = {
+							x: tile.id * params.TILE_WIDTH - ( params.WORLD_WIDTH * params.TILE_WIDTH / 2 ) + ( params.TILE_WIDTH / 2 ),
+							y: tile.row * params.TILE_WIDTH - ( params.WORLD_WIDTH * params.TILE_WIDTH / 2 ) + ( params.TILE_WIDTH / 2 )
+						};
+
+						const min = {
+							x: tilePos.x - ( params.TILE_WIDTH / 2 ),
+							y: tilePos.y - ( params.TILE_WIDTH / 2 )
+						};
+
+						const max = {
+							x: tilePos.x + ( params.TILE_WIDTH / 2 ),
+							y: tilePos.y + ( params.TILE_WIDTH / 2 )
+						};
+
+						testBox.min.x = min.x;
+						testBox.min.y = min.y;
+						testBox.min.z = 0;
+						testBox.max.x = max.x;
+						testBox.max.y = max.y;
+						testBox.max.z = 1;
+
+						testSphere.center.copy( player.pos );
+
+						if ( testBox.intersectsSphere( testSphere ) ) {
+
+							// player.pos.sub( playerVelocity );
+
+							// compute how axis-aligned the two objects are.
+
+							const xDif = Math.abs( player.pos.x - tilePos.x ) / ( params.TILE_WIDTH / 2 + params.PLAYER_RADIUS ) ;
+							const yDif = Math.abs( player.pos.y - tilePos.y ) / ( params.TILE_WIDTH / 2 + params.PLAYER_RADIUS ) ;
+
+							// at 0, the player is at the closest of the box center.
+							// at 1, they are at the farthest.
+							const angleRatio = xDif * yDif;
+
+							// copy box position in 'vec'
+							testBox.getCenter( vec );
+
+							// get diff vector between player and box center
+							vec2.copy( player.pos ).sub( vec );
+
+							// normalize diff vector, and multiply to right value
+							vec2.normalize().multiplyScalar( ( params.TILE_WIDTH / 2 + params.PLAYER_RADIUS ) + ( params.TILE_WIDTH * 0.4 * ( angleRatio * angleRatio ) ) );
+
+							// copy to player position
+							player.pos.copy( vec ).add( vec2 );
+
+						}
+
+						// console.log( min, max )
+						// debugger	
+
+					}
+
+				})
+
+			})
 
 		// update player mesh
 

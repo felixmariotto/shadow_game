@@ -128,7 +128,7 @@ function NewWorld() {
 			const newTile = {
 				row: rowID,
 				id: tileID,
-				type: 0
+				type: params.WORLD_TILES[ rowID ][ tileID ]
 			}
 
 			world.tiles[ rowID ].push( newTile );
@@ -148,7 +148,7 @@ function NewWorld() {
 
 	let counter = 0;
 
-	for ( let doorsID=0 ; doorsID<params.LEVELS_PER_FAMILY-1 ; doorsID++ ) {
+	for ( let doorsID=0 ; doorsID<params.LEVELS_PER_FAMILY ; doorsID++ ) {
 
 		const doorOut = { type: 'out', id: doorsID };
 		const doorIn = { type: 'in', id: doorsID };
@@ -249,7 +249,7 @@ function createWorld( world ) {
 		side.forEach( (door, i) => {
 
 			const geometry = new THREE.PlaneBufferGeometry(
-				params.TILE_WIDTH,
+				params.DOOR_WIDTH,
 				params.TILE_WIDTH
 			);
 
@@ -265,9 +265,9 @@ function createWorld( world ) {
 
 			if ( sideName == 'left' || sideName == 'right' ) {
 
-				doorMesh.position.y = i * (params.WORLD_WIDTH / side.length);
-				doorMesh.position.y -= params.WORLD_WIDTH / 2;
-				doorMesh.position.y += (params.WORLD_WIDTH / side.length) / 2;
+				doorMesh.position.y = i * ( ( params.WORLD_WIDTH - 1.5 ) / side.length);
+				doorMesh.position.y -= ( params.WORLD_WIDTH - 1.5 ) / 2;
+				doorMesh.position.y += ( (params.WORLD_WIDTH - 1.5 ) / side.length) / 2;
 
 			} else {
 

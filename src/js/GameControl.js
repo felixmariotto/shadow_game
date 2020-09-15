@@ -164,7 +164,7 @@ function NewWorld() {
 		const doorIn = { type: 'in', id: doorsID };
 
 		sides[ counter ].push( doorOut );
-		sides[ (counter + 1) % 4 ].push( doorIn );
+		sides[ (counter + 2) % 4 ].push( doorIn );
 
 		counter = (counter + 1) % 4;
 

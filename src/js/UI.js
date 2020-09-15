@@ -31,6 +31,7 @@ for ( let i=0 ; i<params.LEVELS_PER_FAMILY ; i++ ) {
 	const domFirstBtn = document.createElement('DIV');
 	domFirstBtn.innerHTML = i + 1;
 	domFirstBtn.classList.add('level-btn', String(i+1) );
+	domFirstBtn.style.backgroundColor = params.LEVELS_COLORS[ i ];
 
 	domFirstLevels.append( domFirstBtn );
 

@@ -6,22 +6,32 @@ import * as THREE from 'three';
 const params = {
 
 	LEVELS_PER_FAMILY: 7,
+	LEVELS_COLORS: [
+		'#ff7354',
+		'#fff761',
+		'#79ff61',
+		'#61ffe2',
+		'#617eff',
+		'#f461ff',
+		'#ff2b67'
+	],
 
 	PLAYER_RADIUS: 0.4,
-	PLAYER_SPEED: 0.01,
+	PLAYER_SPEED: 0.007,
 
 	BLACK_GHOST_DELAY: 2500, // in ms
+	CREATE_BLACK_GHOST: true,
 
 	TILE_WIDTH: 1,
 	DOOR_WIDTH: 0.8,
 	WORLD_WIDTH: 7,
 	WORLD_TILES: [
 		[ 0, 0, 0, 0, 0, 0, 0 ],
+		[ 0, 2, 2, 0, 2, 2, 0 ],
+		[ 0, 2, 2, 0, 2, 2, 0 ],
 		[ 0, 0, 0, 0, 0, 0, 0 ],
-		[ 0, 1, 1, 0, 1, 1, 0 ],
-		[ 0, 0, 0, 0, 0, 0, 0 ],
-		[ 0, 1, 1, 0, 1, 1, 0 ],
-		[ 0, 0, 0, 0, 0, 0, 0 ],
+		[ 0, 2, 2, 0, 2, 2, 0 ],
+		[ 0, 2, 2, 0, 2, 2, 0 ],
 		[ 0, 0, 0, 0, 0, 0, 0 ]
 	],
 
@@ -30,7 +40,9 @@ const params = {
 
 	
 	TILES_MAT: [
-		new THREE.MeshBasicMaterial({ color: 0xff00ff }),
+		new THREE.MeshLambertMaterial({
+			map: new THREE.TextureLoader().load("https://shadow-game.s3.eu-west-3.amazonaws.com/textures/tiles_emissive.png")
+		}),
 		new THREE.MeshNormalMaterial()
 	],
 	DOOR_MAT: new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide }),

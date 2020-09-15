@@ -15,7 +15,9 @@ const renderer = new THREE.WebGLRenderer({
 
 renderer.setSize( CANVAS.scrollWidth, CANVAS.scrollHeight );
 
-renderer.outputEncoding = THREE.sRGBEncoding;
+renderer.shadowMap.enabled = true;
+
+// renderer.outputEncoding = THREE.sRGBEncoding;
 
 //
 

@@ -131,10 +131,14 @@ function NewWorld() {
 
 		for ( let tileID=0 ; tileID<params.WORLD_WIDTH ; tileID++ ) {
 
+			let type = params.WORLD_TILES[ rowID ][ tileID ];
+
+			if ( type === 2 ) type = Math.floor( Math.random() * 2 );
+
 			const newTile = {
 				row: rowID,
 				id: tileID,
-				type: params.WORLD_TILES[ rowID ][ tileID ]
+				type: type
 			}
 
 			world.tiles[ rowID ].push( newTile );
@@ -229,6 +233,8 @@ function createWorld( world ) {
 
 			tileMesh.position.y = (rowID * params.TILE_WIDTH) - ((params.WORLD_WIDTH * params.TILE_WIDTH) / 2);
 			tileMesh.position.x = (tileID * params.TILE_WIDTH) - ((params.WORLD_WIDTH * params.TILE_WIDTH) / 2);
+
+			tileMesh.receiveShadow = true;
 
 			Scene.add( tileMesh );
 

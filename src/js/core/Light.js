@@ -6,10 +6,16 @@ import Scene from './Scene.js';
 //
 
 const light = ShadowedLight({
-	z: 10,
-	width: 6,
-	bias: -0.0001
+	x: -0.5,
+	y: 2,
+	z: 5,
+	width: 8,
+	resolution: 1024,
+	near: 2,
+	far: 8
 });
+
+light.shadow.radius = 8;
 
 const hemLight = new THREE.HemisphereLight( 0x808080, 0x606060 );
 

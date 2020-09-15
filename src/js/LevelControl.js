@@ -66,7 +66,7 @@ function initLevel( lvlID, fmID, world, recordedGhosts ) {
 
 			const ghost = {
 				pos: new THREE.Vector3( 0, 0, 0.5 ),
-				mesh: Assets.Ghost(),
+				mesh: Assets.Ghost( trackID ),
 				track: ghostTrack,
 				duration: ghostTrack[ ghostTrack.length - 1 ].time
 			};
@@ -85,6 +85,8 @@ function initLevel( lvlID, fmID, world, recordedGhosts ) {
 		pos: new THREE.Vector3(),
 		mesh: Assets.player
 	};
+
+	Assets.setPlayerStyle( lvlID );
 
 	// put player in front of the right door
 
@@ -133,7 +135,8 @@ function gameLoop() {
 
 	if (
 		elapsedTime > params.BLACK_GHOST_DELAY &&
-		!blackGhostIsHere
+		!blackGhostIsHere &&
+		params.CREATE_BLACK_GHOST
 	) {
 
 		const ghost = {

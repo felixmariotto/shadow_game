@@ -6,16 +6,31 @@ import params from '../data/params.js';
 
 const player = new THREE.Mesh(
 	new THREE.SphereBufferGeometry( params.PLAYER_RADIUS ),
-	new THREE.MeshNormalMaterial()
+	new THREE.MeshLambertMaterial()
 );
+
+player.castShadow = true;
+player.receiveShadow = true;
 
 //
 
-function Ghost() {
+function setPlayerStyle( levelID ) {
+
+	player.material.color.set( params.LEVELS_COLORS[ levelID ] );
+
+};
+
+//
+
+function Ghost( id ) {
 
 	const mesh = new THREE.Mesh(
 		new THREE.SphereBufferGeometry( params.PLAYER_RADIUS ),
-		new THREE.MeshBasicMaterial({ color: 0xff0000 })
+		new THREE.MeshBasicMaterial({
+			color: params.LEVELS_COLORS[ id ],
+			transparent: true,
+			opacity: 0.8
+		})
 	);
 
 	return mesh
@@ -39,6 +54,7 @@ function BlackGhost() {
 
 export default {
 	player,
+	setPlayerStyle,
 	Ghost,
 	BlackGhost
 }

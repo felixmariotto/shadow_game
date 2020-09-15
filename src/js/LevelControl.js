@@ -21,7 +21,7 @@ const vec2 = new THREE.Vector3();
 const worldGroup = new THREE.Group();
 Scene.add( worldGroup );
 
-let player, tiles, ghosts, endDoor, levelID, familyID, gameIsDone, ghostSampleTime, ghostSamples;
+let player, tiles, ghosts, endDoor, levelID, familyID, gameIsDone, ghostSampleTime, ghostSamples, blackGhostIsHere;
 let startTime, elapsedTime = 0;
 
 const clock = new THREE.Clock();
@@ -39,6 +39,7 @@ function initLevel( lvlID, fmID, world, recordedGhosts ) {
 	levelID = lvlID;
 	familyID = fmID;
 	gameIsDone = false;
+	blackGhostIsHere = false;
 	ghostSampleTime = 0;
 	ghostSamples = [];
 	ghosts = [];
@@ -120,13 +121,34 @@ function gameLoop() {
 
 	const deltaTime = clock.getDelta();
 
-	if ( gameIsDone ) return
+	if ( gameIsDone || !player ) return
 
 	const speedRatio = deltaTime / TARGET_STEP_DURATION;
 
 	ghostSampleTime += deltaTime * 1000;
 
 	elapsedTime += deltaTime * 1000;
+
+	// create black ghost with track currently being recorded by the player
+
+	if (
+		elapsedTime > params.BLACK_GHOST_DELAY &&
+		!blackGhostIsHere
+	) {
+
+		const ghost = {
+			pos: new THREE.Vector3( 0, 0, 0.5 ),
+			mesh: Assets.BlackGhost(),
+			track: ghostSamples
+		};
+
+		ghosts.push( ghost );
+
+		Scene.add( ghost.mesh );
+
+		blackGhostIsHere = true;
+
+	};
 
 	// move player
 
@@ -215,9 +237,6 @@ function gameLoop() {
 
 						}
 
-						// console.log( min, max )
-						// debugger	
-
 					}
 
 				})
@@ -236,7 +255,9 @@ function gameLoop() {
 
 		ghosts.forEach( (ghost) => {
 
-			const targetTime = elapsedTime % ghost.duration;
+			const targetTime = ghost.duration ?
+				elapsedTime % ghost.duration :
+				elapsedTime - params.BLACK_GHOST_DELAY;
 
 			const currentPosIdx = ghost.track.findIndex( sample => sample.time >= targetTime );
 
@@ -291,7 +312,7 @@ function gameLoop() {
 
 	}
 
-	// sample player moves for later ghost
+	// sample player moves for later ghosts
 
 	if ( player ) {
 

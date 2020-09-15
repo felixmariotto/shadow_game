@@ -24,7 +24,21 @@ function Ghost() {
 
 //
 
+function BlackGhost() {
+
+	const mesh = new THREE.Mesh(
+		new THREE.SphereBufferGeometry( params.PLAYER_RADIUS ),
+		new THREE.MeshBasicMaterial({ color: 0x000000 })
+	);
+
+	return mesh
+
+}
+
+//
+
 export default {
 	player,
-	Ghost
+	Ghost,
+	BlackGhost
 }

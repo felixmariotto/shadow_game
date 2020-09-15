@@ -54,20 +54,6 @@ function winLevel( levelID, familyID, ghostSamples ) {
 
 	ghosts[ familyID ][ levelID ] = ghostSamples.slice(0);
 
-	/*
-	if (
-		lastLevelAvailable === levelID &&
-		(
-			( familyID === 0 && !areShadowLevelsAvailable ) ||
-			( familyID === 1 && areShadowLevelsAvailable )
-		)
-	) {
-
-		ghosts[ familyID ][ levelID ] = ghostSamples.slice(0);
-
-	};
-	*/
-
 	// upgrade last level available
 
 	if (

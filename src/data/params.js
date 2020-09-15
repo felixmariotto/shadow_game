@@ -10,6 +10,8 @@ const params = {
 	PLAYER_RADIUS: 0.4,
 	PLAYER_SPEED: 0.01,
 
+	BLACK_GHOST_DELAY: 2500, // in ms
+
 	TILE_WIDTH: 1,
 	DOOR_WIDTH: 0.8,
 	WORLD_WIDTH: 7,

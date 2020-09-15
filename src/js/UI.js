@@ -24,6 +24,18 @@ domStartBtn.addEventListener('click', () => {
 
 });
 
+// start next level on press space bar
+
+window.addEventListener('keydown', (e) => {
+
+	if ( e.code === 'Space' ) {
+
+		GameControl.startLevel()
+
+	}
+
+})
+
 // create level buttons
 
 for ( let i=0 ; i<params.LEVELS_PER_FAMILY ; i++ ) {

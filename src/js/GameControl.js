@@ -10,7 +10,7 @@ import params from '../data/params.js';
 
 //
 
-let lastLevelAvailable, areShadowLevelsAvailable, ghosts, world;
+let lastLevelAvailable, areShadowLevelsAvailable, ghosts, world, gameIsOn;
 
 //
 
@@ -34,6 +34,12 @@ function startNewGame() {
 //
 
 function startLevel( levelID, levelFamily ) {
+
+	if ( gameIsOn ) return
+
+	gameIsOn = true;
+	levelID = levelID !== undefined ? levelID : lastLevelAvailable;
+	levelFamily = levelFamily !== undefined ? levelFamily : ( areShadowLevelsAvailable ? 1 : 0 );
 
 	// console.log('start level ' + levelID + ' of family ' + levelFamily )
 
@@ -88,6 +94,8 @@ function winLevel( levelID, familyID, ghostSamples ) {
 
 		LevelControl.cleanup();
 
+		gameIsOn = false;
+
 	}, 1000 );
 
 }
@@ -103,6 +111,8 @@ function failLevel() {
 		UI.showLevelMenu();
 
 		LevelControl.cleanup();
+
+		gameIsOn = false;
 
 	}, 1000 );
 

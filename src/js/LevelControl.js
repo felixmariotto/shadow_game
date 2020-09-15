@@ -42,7 +42,8 @@ function initLevel( lvlID, fmID, world, recordedGhosts ) {
 	ghostSampleTime = 0;
 	ghostSamples = [];
 	ghosts = [];
-	startTime, elapsedTime = 0;
+	startTime = 0;
+	elapsedTime = 0;
 	tiles = world.tiles;
 
 	// reset doors materials
@@ -55,9 +56,12 @@ function initLevel( lvlID, fmID, world, recordedGhosts ) {
 
 	// create ghosts ( if any )
 
-	recordedGhosts.forEach( (family) => {
+	recordedGhosts.forEach( (family, familyID) => {
 
-		family.forEach( (ghostTrack) => {
+		family.forEach( (ghostTrack, trackID) => {
+
+			// skip ghost of existing level
+			if ( familyID === fmID && trackID === lvlID ) return
 
 			const ghost = {
 				pos: new THREE.Vector3( 0, 0, 0.5 ),
@@ -114,9 +118,9 @@ function initLevel( lvlID, fmID, world, recordedGhosts ) {
 
 function gameLoop() {
 
-	if ( gameIsDone ) return
-
 	const deltaTime = clock.getDelta();
+
+	if ( gameIsDone ) return
 
 	const speedRatio = deltaTime / TARGET_STEP_DURATION;
 
